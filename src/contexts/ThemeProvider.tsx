@@ -61,7 +61,7 @@ const ThemeContextProvider: React.FC<IThemeContextProviderProps> = ({
     <ThemeContext.Provider
       value={{ handleThemeChange, theme, darkMode, setDarkMode }}
     >
-      <ThemeProvider theme={theme} >{children}</ThemeProvider>
+      <ThemeProvider theme={theme}>{children}</ThemeProvider>
     </ThemeContext.Provider>
   );
 };
