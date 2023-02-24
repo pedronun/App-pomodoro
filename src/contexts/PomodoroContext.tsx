@@ -80,4 +80,3 @@ const PomodoroContextProvider: React.FC<IPomodoroContextProviderProps> = ({
 };
 
 export { usePomodoro, PomodoroContext, PomodoroContextProvider };
-
