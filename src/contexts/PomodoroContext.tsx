@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 
 const STOPS_ULTIL_LONG_BREAK = 5;
 
@@ -24,7 +24,8 @@ interface IPomodoroContextType {
   setLongBreakTime: React.Dispatch<React.SetStateAction<number>>;
   autoReset: boolean;
   setAutoReset: React.Dispatch<React.SetStateAction<boolean>>;
-  handleStateChange: (state: PomodoroState) => void;
+  handleStateChange: () => void;
+  time: number;
 }
 
 const PomodoroContext = createContext({} as IPomodoroContextType);
@@ -34,12 +35,13 @@ const PomodoroContextProvider: React.FC<IPomodoroContextProviderProps> = ({
   children,
 }) => {
   const [state, setState] = useState<PomodoroState>(PomodoroState.FOCUS);
-  const [running, setRunning] = useState<boolean>(false);
-  const [stopCount, setStopCount] = useState<number>(0);
-  const [autoReset, setAutoReset] = useState<boolean>(false);
-  const [focusTime, setFocusTime] = useState<number>(25);
-  const [shortBreakTime, setShortBreakTime] = useState<number>(5);
-  const [longBreakTime, setLongBreakTime] = useState<number>(15);
+  const [running, setRunning] = useState(false);
+  const [stopCount, setStopCount] = useState(0);
+  const [autoReset, setAutoReset] = useState(false);
+  const [focusTime, setFocusTime] = useState(25);
+  const [shortBreakTime, setShortBreakTime] = useState(5);
+  const [longBreakTime, setLongBreakTime] = useState(15);
+  const [time, setTime] = useState(focusTime * 60);
 
   const handleStateChange = () => {
     if (stopCount === STOPS_ULTIL_LONG_BREAK) {
@@ -57,6 +59,35 @@ const PomodoroContextProvider: React.FC<IPomodoroContextProviderProps> = ({
     }
   };
 
+  useEffect(() => {
+    if (state === PomodoroState.FOCUS) {
+      setTime(focusTime * 60);
+    } else if (state === PomodoroState.SHORT_BREAK) {
+      setTime(shortBreakTime * 60);
+    } else if (state === PomodoroState.LONG_BREAK) {
+      setTime(longBreakTime * 60);
+    }
+  }, [state]);
+
+  useEffect(() => {
+    if (!running) return;
+
+    const interval = setInterval(() => {
+      setTime((prev) => {
+        if (prev !== 0) return prev - 1;
+
+        handleStateChange();
+
+        if (autoReset) return time;
+
+        setRunning(false);
+        return prev;
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [time, running]);
+
   return (
     <PomodoroContext.Provider
       value={{
@@ -72,6 +103,7 @@ const PomodoroContextProvider: React.FC<IPomodoroContextProviderProps> = ({
         setLongBreakTime,
         setShortBreakTime,
         shortBreakTime,
+        time,
       }}
     >
       {children}
@@ -80,3 +112,4 @@ const PomodoroContextProvider: React.FC<IPomodoroContextProviderProps> = ({
 };
 
 export { usePomodoro, PomodoroContext, PomodoroContextProvider };
+

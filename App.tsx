@@ -1,8 +1,9 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
 import { useFonts } from "expo-font";
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet } from "react-native";
 import { PomodoroContextProvider } from "./src/contexts/PomodoroContext";
 import { ThemeContextProvider } from "./src/contexts/ThemeProvider";
+import { PomodoroPage } from "./src/pages/PomodoroPage/PomodoroPage";
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -18,10 +19,8 @@ export default function App() {
   return (
     <PomodoroContextProvider>
       <ThemeContextProvider>
-        <View style={[styles.container]}>
-          <Text>Open up App.tsx to start working on your app!</Text>
-          <StatusBar style="auto" />
-        </View>
+        <PomodoroPage />
+        <StatusBar style="auto" />
       </ThemeContextProvider>
     </PomodoroContextProvider>
   );
