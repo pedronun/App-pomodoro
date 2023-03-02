@@ -7,13 +7,17 @@ import {
   SecondaryButton,
 } from "./ButtonsControl.styles";
 
-export function ButtonsControl() {
+interface ButtonsControlProps {
+  setOpenSettings: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export function ButtonsControl({ setOpenSettings }: ButtonsControlProps) {
   const { setRunning, handleStateChange, running } = usePomodoro();
   const { colors } = useTheme();
 
   return (
     <Container>
-      <SecondaryButton>
+      <SecondaryButton onPress={() => setOpenSettings(prev => !prev)}>
         <DotsThree size={45} color={colors.primary} weight="bold" />
       </SecondaryButton>
       <PrimaryButton onPress={() => setRunning((prev) => !prev)}>

@@ -67,7 +67,7 @@ const PomodoroContextProvider: React.FC<IPomodoroContextProviderProps> = ({
     } else if (state === PomodoroState.LONG_BREAK) {
       setTime(longBreakTime * 60);
     }
-  }, [state]);
+  }, [state, focusTime, shortBreakTime, longBreakTime]);
 
   useEffect(() => {
     if (!running) return;
