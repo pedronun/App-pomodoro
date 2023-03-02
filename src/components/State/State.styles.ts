@@ -2,7 +2,7 @@ import styled from "styled-components/native";
 
 export const Container = styled.View`
   margin-bottom: 32px;
-  background-color: ${({ theme }) => theme.colors.background};
+  background-color: ${({ theme }) => theme.colors.tertiary};
   border: 2px solid ${({ theme }) => theme.colors.primary};
   padding: 8px 16px;
   align-items: center;

@@ -13,7 +13,7 @@ export function State() {
       {state === "FOCUS" ? (
         <Brain color={colors.primary} size={32} weight="fill" />
       ) : (
-        <Coffee color={colors.primary} size={32} weight="fill" />
+        <Coffee color={colors.primary} size={32} />
       )}
       <StateTitle>{formatState(state)}</StateTitle>
     </Container>
